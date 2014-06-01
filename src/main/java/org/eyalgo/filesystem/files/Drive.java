@@ -1,11 +1,9 @@
 package org.eyalgo.filesystem.files;
 
-public class Drive implements MyFile {
-
-    private final String name;
+public class Drive extends MyFile {
 
     public Drive(String name) {
-	this.name = name;
+	super(name, null);
     }
 
     @Override
@@ -14,13 +12,8 @@ public class Drive implements MyFile {
     }
 
     @Override
-    public String name() {
-	return name;
-    }
-
-    @Override
     public String path() {
-	return name + PATH_DELIMITER;
+	return name() + PATH_DELIMITER;
     }
     
     public boolean containesFile() {

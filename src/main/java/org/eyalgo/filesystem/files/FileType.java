@@ -1,5 +1,5 @@
 package org.eyalgo.filesystem.files;
 
 public enum FileType {
-    Drive, Folder;
+    Drive, Folder, Text;
 }
