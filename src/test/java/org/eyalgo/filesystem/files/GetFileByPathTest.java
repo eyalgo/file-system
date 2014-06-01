@@ -10,14 +10,14 @@ public class GetFileByPathTest {
 
     @Test
     public void driveWithSameLetterAndOnePath_shouldReturnItself() {
-	Drive drive = new Drive("c");
-	Drive fileFound = (Drive) drive.getFile(new String[] { "c" });
+	MyFile drive = new Drive("c");
+	MyFile fileFound = drive.getFile(new String[] { "c" });
 	assertThat(fileFound, sameInstance(drive));
     }
 
     @Test(expected = PathNotFoundException.class)
     public void driveWithDifferentLetterAndOneInPath_shouldThrowPathNotFoundException() {
-	Drive drive = new Drive("c");
+	MyFile drive = new Drive("c");
 	drive.getFile(new String[] { "d" });
     }
 
@@ -29,6 +29,29 @@ public class GetFileByPathTest {
 
 	MyFile fileFound = drive.getFile(new String[] { "c", "textFile-name" });
 	assertThat(fileFound, sameInstance(textFile));
+    }
+    
+    @Test
+    public void textInsideZipInsideFolderInsideZipInsideDrive() {
+	Drive drive = new Drive("c");
+	
+	Zip zip1 = new Zip("zip1", drive);
+	drive.add(zip1);
+	
+	Folder folder1 = new Folder("folder1", zip1);
+	zip1.add(folder1);
+	
+	Zip zip2 = new Zip("zip2", folder1);
+	folder1.add(zip2);
+	
+	MyFile textFile = new TextFile("textFile-name", zip2);
+	zip2.add(textFile);
+	
+	assertThat(drive.getFile(new String[] { "c", "zip1","folder1","zip2", "textFile-name"}), sameInstance(textFile));
+	assertThat((Zip)drive.getFile(new String[] { "c", "zip1","folder1","zip2"}), sameInstance(zip2));
+	assertThat((Folder)drive.getFile(new String[] { "c", "zip1","folder1"}), sameInstance(folder1));
+	assertThat((Zip)drive.getFile(new String[] { "c", "zip1"}), sameInstance(zip1));
+	assertThat((Drive)drive.getFile(new String[] { "c"}), sameInstance(drive));
     }
 
     @Test(expected = PathNotFoundException.class)
