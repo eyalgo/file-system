@@ -28,11 +28,15 @@ public class MyFileSystem {
 	return drive;
     }
 
-    public MyFile create(FileType file, String name, String path) {
-	String[] splitPath = path.split(PATH_DELIMITER + PATH_DELIMITER);
+    public MyFile create(FileType file, String name, String parentPath) {
+	String[] splitPath = parentPath.split(PATH_DELIMITER + PATH_DELIMITER);
 	Drive drive = drives.get(splitPath[0]);
 	Folder folder = new Folder(name, drive);
 	return folder;
+    }
+    
+    public MyFile fileFromPath() {
+	return null;
     }
 
 }

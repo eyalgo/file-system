@@ -23,6 +23,10 @@ public abstract class MyFileContainer extends MyFile {
     public final int size() {
 	return sizeCalculator.size(children.values());
     }
+    
+    public MyFile getFile(String... pathSplit) {
+	return null;
+    }
 
     public boolean exists(String[] pathSplit) {
 	String directFileName = pathSplit[0];
