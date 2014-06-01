@@ -21,4 +21,5 @@ public abstract class MyFile {
     public abstract int size();
 
     public abstract FileType type();
+    public abstract MyFile getFile(String... pathSplit);
 }

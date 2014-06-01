@@ -20,18 +20,34 @@ public class Drive extends MyFileContainer {
     public String path() {
 	return name() + PATH_DELIMITER;
     }
-    
+
+    @Override
     public MyFile getFile(String... pathSplit) {
+	checkValidSizeOfPath(pathSplit);
+	checkFileName(pathSplit[0]);
 	if (pathSplit.length == 1) {
-	    if (name().equals(pathSplit[0])) {
-		return this;
-	    }
+	    return this;
 	}
-	throw new PathNotFoundException(String.format("Path not found. Drive %s", Arrays.asList(pathSplit)));
-    }
-    
-    public boolean containesFile() {
-	return false;
+	String childToFind = pathSplit[1];
+	return getFile(children().get(childToFind), pathSplit);
     }
 
+    private MyFile getFile(MyFile current, String... pathSplit) {
+	if (current == null) {
+	    throw new PathNotFoundException(String.format("Path not found. %s", Arrays.asList(pathSplit)));
+	}
+	return current.getFile(Arrays.copyOfRange(pathSplit, 1, pathSplit.length));
+    }
+
+    private void checkValidSizeOfPath(String... pathSplit) {
+	if (pathSplit.length == 0) {
+	    throw new PathNotFoundException(String.format("Path not found."));
+	}
+    }
+
+    private void checkFileName(String currentFilePathName) {
+	if (!name().equals(currentFilePathName)) {
+	    throw new PathNotFoundException(String.format("Path not found. Drive %s", currentFilePathName));
+	}
+    }
 }

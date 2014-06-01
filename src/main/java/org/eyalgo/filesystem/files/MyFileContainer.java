@@ -20,19 +20,25 @@ public abstract class MyFileContainer extends MyFile {
 	children.put(file.name(), file);
     }
 
+    @Override
     public final int size() {
 	return sizeCalculator.size(children.values());
     }
     
+    @Override
     public MyFile getFile(String... pathSplit) {
 	return null;
     }
-
+    
     public boolean exists(String[] pathSplit) {
 	String directFileName = pathSplit[0];
 	if (children.containsKey(directFileName)) {
 	    return true;
 	}
 	return false;
+    }
+    
+    protected Map<String, MyFile> children() {
+	return children;
     }
 }

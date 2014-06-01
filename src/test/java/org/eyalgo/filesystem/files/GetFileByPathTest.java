@@ -21,6 +21,16 @@ public class GetFileByPathTest {
 	drive.getFile(new String[] { "d" });
     }
 
+    @Test
+    public void textFileUnderDriveWithCorrectPath_shouldReturnTheFile() {
+	Drive drive = new Drive("c");
+	MyFile textFile = new TextFile("textFile-name", drive);
+	drive.add(textFile);
+
+	MyFile fileFound = drive.getFile(new String[] { "c", "textFile-name" });
+	assertThat(fileFound, sameInstance(textFile));
+    }
+
     @Test(expected = PathNotFoundException.class)
     public void driveThatGetsLongerPath_shouldThrowPathNotFoundException() throws Exception {
 	Drive drive = new Drive("c");
