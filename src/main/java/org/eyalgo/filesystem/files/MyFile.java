@@ -1,6 +1,5 @@
 package org.eyalgo.filesystem.files;
 
-
 public abstract class MyFile {
     public static final String PATH_DELIMITER = "\\";
     private final String name;
@@ -19,9 +18,7 @@ public abstract class MyFile {
 	return parent.path() + name + PATH_DELIMITER;
     }
 
-    public int size() {
-	return -1;
-    }
-    
+    public abstract int size();
+
     public abstract FileType type();
 }

@@ -1,9 +1,11 @@
 package org.eyalgo.filesystem.files;
 
+import org.eyalgo.filesystem.files.size.SimpleSizeCalculator;
+
 public class Drive extends MyFileContainer {
 
     public Drive(String name) {
-	super(name, null);
+	super(name, null, new SimpleSizeCalculator());
     }
 
     @Override
