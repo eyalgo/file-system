@@ -1,6 +1,6 @@
 package org.eyalgo.filesystem.files;
 
-public class Drive extends MyFile {
+public class Drive extends MyFileContainer {
 
     public Drive(String name) {
 	super(name, null);

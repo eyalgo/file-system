@@ -1,14 +1,14 @@
 package org.eyalgo.filesystem.files;
 
-public class Folder extends MyFileContainer {
+public class Zip extends MyFileContainer {
 
-    public Folder(String name, MyFile parent) {
+    public Zip(String name, MyFile parent) {
 	super(name, parent);
     }
 
     @Override
     public FileType type() {
-	return FileType.Folder;
+	return FileType.Zip;
     }
 
 }
