@@ -4,7 +4,7 @@ import org.eyalgo.filesystem.files.size.CompressedSizeCalculator;
 
 public class Zip extends MyFileContainer {
 
-    public Zip(String name, MyFile parent) {
+    Zip(String name, MyFile parent) {
 	super(name, parent, new CompressedSizeCalculator());
     }
 

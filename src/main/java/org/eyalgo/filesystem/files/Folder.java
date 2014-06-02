@@ -4,7 +4,7 @@ import org.eyalgo.filesystem.files.size.SimpleSizeCalculator;
 
 public class Folder extends MyFileContainer {
 
-    public Folder(String name, MyFile parent) {
+    Folder(String name, MyFile parent) {
 	super(name, parent, new SimpleSizeCalculator());
     }
 

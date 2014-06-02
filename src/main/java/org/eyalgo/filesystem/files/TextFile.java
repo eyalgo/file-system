@@ -7,7 +7,7 @@ import org.eyalgo.filesystem.exceptions.PathNotFoundException;
 public class TextFile extends MyFile {
     private String content;
 
-    public TextFile(String name, MyFile parent) {
+    TextFile(String name, MyFile parent) {
 	super(name, parent);
 	content = "";
     }

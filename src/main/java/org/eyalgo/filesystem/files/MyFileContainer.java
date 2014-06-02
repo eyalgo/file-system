@@ -12,7 +12,7 @@ public abstract class MyFileContainer extends MyFile {
     private final Map<String, MyFile> children;
     private SizeCalculator sizeCalculator;
 
-    public MyFileContainer(String name, MyFile parent, SizeCalculator sizeCalculator) {
+    MyFileContainer(String name, MyFile parent, SizeCalculator sizeCalculator) {
 	super(name, parent);
 	this.sizeCalculator = sizeCalculator;
 	this.children = Maps.newHashMap();

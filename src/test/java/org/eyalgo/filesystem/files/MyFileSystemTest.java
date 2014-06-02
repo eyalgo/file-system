@@ -1,12 +1,10 @@
-package org.eyalgo.filesystem.system;
+package org.eyalgo.filesystem.files;
 
 import static org.eyalgo.filesystem.files.MyFile.PATH_DELIMITER;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.eyalgo.filesystem.exceptions.PathAlreadyExistsException;
-import org.eyalgo.filesystem.files.FileType;
-import org.eyalgo.filesystem.files.MyFile;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -17,6 +15,13 @@ public class MyFileSystemTest {
     @Before
     public void setup() {
 	fs = new MyFileSystem();
+	assertThat(fs.name(), is(""));
+	assertThat(fs.path(), is(PATH_DELIMITER));
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    @Ignore
+    public void canAddOnlyDrive() throws Exception {
     }
 
     @Test
@@ -37,6 +42,7 @@ public class MyFileSystemTest {
     }
 
     @Test
+    @Ignore
     public void whenAddingFolderToDrive_shuouldReturnFolder() {
 	fs.createDrive("c");
 	String name = "the-folder";
