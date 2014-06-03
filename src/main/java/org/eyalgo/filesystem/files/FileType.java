@@ -1,35 +1,41 @@
 package org.eyalgo.filesystem.files;
 
-public enum FileType {
+import org.eyalgo.filesystem.exceptions.IllegalFileSystemOperationException;
+
+enum FileType {
     Drive {
 	@Override
-	public MyFile create(String name, MyFile parent) {
-	    return new Drive(name);
+	MyFile create(String name, MyFileContainer parent) {
+	    if (parent instanceof MyFileSystem) {
+		return new Drive(name, (MyFileSystem) parent);
+	    }
+	    throw new IllegalFileSystemOperationException(String.format(
+		    "Drive can only be child of MyFileSystem. Got parent of: %s", parent.type()));
 	}
     },
     Folder {
 	@Override
-	public MyFile create(String name, MyFile parent) {
+	MyFile create(String name, MyFileContainer parent) {
 	    return new Folder(name, parent);
 	}
     },
     Text {
 	@Override
-	public MyFile create(String name, MyFile parent) {
+	MyFile create(String name, MyFileContainer parent) {
 	    return new TextFile(name, parent);
 	}
     },
     Zip {
 	@Override
-	public MyFile create(String name, MyFile parent) {
+	MyFile create(String name, MyFileContainer parent) {
 	    return new Zip(name, parent);
 	}
     },
     FILE_SYSTEM {
 	@Override
-	public MyFile create(String name, MyFile parent) {
+	MyFile create(String name, MyFileContainer parent) {
 	    return new MyFileSystem();
 	}
     };
-    public abstract MyFile create(String name, MyFile parent);
+    abstract MyFile create(String name, MyFileContainer parent);
 }

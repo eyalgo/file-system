@@ -5,8 +5,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.eyalgo.filesystem.exceptions.PathAlreadyExistsException;
+import org.eyalgo.filesystem.exceptions.PathNotFoundException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class MyFileSystemTest {
@@ -18,53 +18,37 @@ public class MyFileSystemTest {
 	assertThat(fs.name(), is(""));
 	assertThat(fs.path(), is(PATH_DELIMITER));
     }
-    
-    @Test(expected=IllegalArgumentException.class)
-    @Ignore
-    public void canAddOnlyDrive() throws Exception {
-    }
 
     @Test
-    public void whenCreatingNonExistingDrive_shouldReturnIt() {
-	String name = "c";
-	MyFile driveC = fs.createDrive(name);
-
+    public void addDriveToFileSystem() {
+	MyFile driveC = fs.create(FileType.Drive, "c", PATH_DELIMITER);
 	assertThat(driveC.type(), is(FileType.Drive));
-	assertThat(driveC.name(), is(name));
-	assertThat(driveC.path(), is(name + PATH_DELIMITER));
+	assertThat(driveC.name(), is("c"));
+	assertThat(driveC.path(), is(PATH_DELIMITER + "c" + PATH_DELIMITER));
     }
 
     @Test(expected = PathAlreadyExistsException.class)
-    public void whenCreatingDriveWithTheSameName_shouldThrowPathAlreadyExists() {
-	String name = "c";
-	fs.createDrive(name);
-	fs.createDrive(name);
+    public void whenAddSameDrive_shouldGetPathAlreadyExists() {
+	fs.create(FileType.Drive, "c", PATH_DELIMITER);
+	fs.create(FileType.Drive, "c", PATH_DELIMITER);
     }
 
     @Test
-    @Ignore
     public void whenAddingFolderToDrive_shuouldReturnFolder() {
-	fs.createDrive("c");
+	fs.create(FileType.Drive, "c", PATH_DELIMITER);
 	String name = "the-folder";
-	String path = "c\\";
+	String path = PATH_DELIMITER + "c" + PATH_DELIMITER;
 	MyFile theFolder = fs.create(FileType.Folder, name, path);
 	assertThat(theFolder.type(), is(FileType.Folder));
 	assertThat(theFolder.name(), is(name));
-	assertThat(theFolder.path(), is("c" + PATH_DELIMITER + name + PATH_DELIMITER));
+	assertThat(theFolder.path(), is(path + name + PATH_DELIMITER));
     }
-    
-    @Test
-    @Ignore
-    public void addFolderToAnotherFolder() {
-	fs.createDrive("c");
-	String parentFolder = "parentFolder";
-	fs.create(FileType.Folder, parentFolder, "c\\");
-	
-	String path = "c\\parentFolder\\";
-	String theFolderName = "the-folder";
-	MyFile theFolder = fs.create(FileType.Folder, theFolderName, path);
-	assertThat(theFolder.type(), is(FileType.Folder));
-	assertThat(theFolder.name(), is(theFolderName));
-	assertThat(theFolder.path(), is("c\\parentFolder\\"+theFolderName));
+
+    @Test(expected = PathNotFoundException.class)
+    public void whenAddingToWrongPath_shouldGetPathNotFoundException() {
+	fs.create(FileType.Drive, "c", PATH_DELIMITER);
+	String name = "the-folder";
+	String path = PATH_DELIMITER + "d" + PATH_DELIMITER;
+	fs.create(FileType.Folder, name, path);
     }
 }

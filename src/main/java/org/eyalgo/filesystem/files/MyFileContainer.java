@@ -18,17 +18,21 @@ public abstract class MyFileContainer extends MyFile {
 	this.children = Maps.newHashMap();
     }
 
-    public void add(MyFile file) {
+    void add(MyFile file) {
 	children.put(file.name(), file);
+    }
+
+    boolean childExists(String name) {
+	return children.containsKey(name);
     }
 
     @Override
     public final int size() {
 	return sizeCalculator.size(children.values());
     }
-    
+
     @Override
-    public final MyFile getFile(String... pathSplit) {
+    protected final MyFile getFile(String... pathSplit) {
 	checkValidSizeOfPath(pathSplit);
 	checkFileName(pathSplit[0]);
 	if (pathSplit.length == 1) {
@@ -37,7 +41,7 @@ public abstract class MyFileContainer extends MyFile {
 	String childToFind = pathSplit[1];
 	return getFile(children.get(childToFind), pathSplit);
     }
- 
+
     private void checkValidSizeOfPath(String... pathSplit) {
 	if (pathSplit.length == 0) {
 	    throw new PathNotFoundException(String.format("Path not found."));

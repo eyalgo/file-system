@@ -4,26 +4,33 @@ import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import org.eyalgo.filesystem.exceptions.PathNotFoundException;
+import org.junit.Before;
 import org.junit.Test;
 
 public class GetFileByPathTest {
+    private MyFileSystem fileSystem;
+
+    @Before
+    public void setup() {
+	fileSystem = new MyFileSystem();
+    }
 
     @Test
     public void driveWithSameLetterAndOnePath_shouldReturnItself() {
-	MyFile drive = new Drive("c");
+	MyFile drive = new Drive("c", fileSystem);
 	MyFile fileFound = drive.getFile(new String[] { "c" });
 	assertThat(fileFound, sameInstance(drive));
     }
 
     @Test(expected = PathNotFoundException.class)
     public void driveWithDifferentLetterAndOneInPath_shouldThrowPathNotFoundException() {
-	MyFile drive = new Drive("c");
+	MyFile drive = new Drive("c", fileSystem);
 	drive.getFile(new String[] { "d" });
     }
 
     @Test
     public void textFileUnderDriveWithCorrectPath_shouldReturnTheFile() {
-	Drive drive = new Drive("c");
+	Drive drive = new Drive("c", fileSystem);
 	MyFile textFile = new TextFile("textFile-name", drive);
 	drive.add(textFile);
 
@@ -33,7 +40,7 @@ public class GetFileByPathTest {
     
     @Test
     public void textInsideZipInsideFolderInsideZipInsideDrive() {
-	Drive drive = new Drive("c");
+	Drive drive = new Drive("c", fileSystem);
 	
 	Zip zip1 = new Zip("zip1", drive);
 	drive.add(zip1);
@@ -56,7 +63,7 @@ public class GetFileByPathTest {
 
     @Test(expected = PathNotFoundException.class)
     public void driveThatGetsLongerPath_shouldThrowPathNotFoundException() throws Exception {
-	Drive drive = new Drive("c");
+	Drive drive = new Drive("c", fileSystem);
 	drive.getFile(new String[] { "c", "d" });
     }
 }
