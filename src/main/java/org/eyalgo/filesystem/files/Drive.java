@@ -4,7 +4,7 @@ import org.eyalgo.filesystem.files.size.SimpleSizeCalculator;
 
 public class Drive extends MyFileContainer {
 
-    Drive(String name, MyFileSystem fileSystem) {
+    Drive(String name, MyFileSystemContainer fileSystem) {
 	super(name, fileSystem, new SimpleSizeCalculator());
     }
 

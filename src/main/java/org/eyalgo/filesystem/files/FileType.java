@@ -6,11 +6,15 @@ enum FileType {
     Drive {
 	@Override
 	MyFile create(String name, MyFileContainer parent) {
-	    if (parent instanceof MyFileSystem) {
-		return new Drive(name, (MyFileSystem) parent);
+	    if (rootFileSystem(parent)) {
+		return new Drive(name, (MyFileSystemContainer) parent);
 	    }
 	    throw new IllegalFileSystemOperationException(String.format(
 		    "Drive can only be child of MyFileSystem. Got parent of: %s", parent.type()));
+	}
+
+	private boolean rootFileSystem(MyFileContainer parent) {
+	    return parent instanceof MyFileSystemContainer;
 	}
     },
     Folder {

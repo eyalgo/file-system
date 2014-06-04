@@ -1,18 +1,16 @@
 package org.eyalgo.filesystem.files;
 
+import static org.eyalgo.filesystem.files.MyFile.PATH_DELIMITER;
+
 import org.eyalgo.filesystem.exceptions.IllegalFileSystemOperationException;
 import org.eyalgo.filesystem.exceptions.PathAlreadyExistsException;
 import org.eyalgo.filesystem.files.size.SimpleSizeCalculator;
 
-public class MyFileSystem extends MyFileSystemContainer {
+public class MyFileSystemComposed {
+    private final FileSystemContainer fileSystemContainer;
 
-    public MyFileSystem() {
-	super("", null, new SimpleSizeCalculator());
-    }
-
-    @Override
-    public String path() {
-	return PATH_DELIMITER;
+    public MyFileSystemComposed() {
+	fileSystemContainer = new FileSystemContainer();
     }
 
     public MyFile create(FileType fileType, String name, String parentPath) {
@@ -54,16 +52,29 @@ public class MyFileSystem extends MyFileSystemContainer {
 	return newFile;
     }
 
-    @Override
-    public FileType type() {
-	return FileType.FILE_SYSTEM;
-    }
-
     public MyFile getFileByPath(String path) {
 	if (PATH_DELIMITER.equals(path)) {
-	    return this;
+	    return fileSystemContainer;
 	}
 	String[] splitPath = path.split(PATH_DELIMITER + PATH_DELIMITER);
-	return this.getFile(splitPath);
+	return fileSystemContainer.getFile(splitPath);
+    }
+
+    final static class FileSystemContainer extends MyFileSystemContainer {
+
+	FileSystemContainer() {
+	    super("", null, new SimpleSizeCalculator());
+	}
+
+	@Override
+	public String path() {
+	    return PATH_DELIMITER;
+	}
+
+	@Override
+	public FileType type() {
+	    return FileType.FILE_SYSTEM;
+	}
+
     }
 }
